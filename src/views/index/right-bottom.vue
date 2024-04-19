@@ -13,7 +13,7 @@ const state = reactive<any>({
   list: [],
   defaultOption: {
     ...defaultOption.value,
-    singleHeight: 252,
+    singleHeight: 266,
     limitScrollNum: 3,
     // step:3
   },
@@ -24,7 +24,26 @@ const getData = () => {
   rightBottom({ limitNum: 20 })
     .then((res) => {
       console.log("右下", res);
+      const array = ["特别紧急", "紧急", "高", "中", "低"];
+      const alertdetail = [
+        "温度过高",
+        "CPU使用率超高",
+        "内存使用率过高",
+        "内存使用过高",
+        "发生蓝屏",
+        "磁盘Io异常",
+        "网卡异常",
+        "网速异常",
+      ];
+      // 从数组中随机选择一个元素
       if (res.success) {
+        res.data.list.forEach((element: any) => {
+          const randomElement = array[Math.floor(Math.random() * array.length)];
+          const randomDeail =
+            alertdetail[Math.floor(Math.random() * array.length)];
+          element.alertdetail = randomDeail;
+          element.WarningTxt = randomElement;
+        });
         state.list = res.data.list;
       } else {
         ElMessage({
@@ -58,7 +77,10 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="right_bottom_wrap beautify-scroll-def" :class="{ 'overflow-y-auto': !indexConfig.rightBottomSwiper }">
+  <div
+    class="right_bottom_wrap beautify-scroll-def"
+    :class="{ 'overflow-y-auto': !indexConfig.rightBottomSwiper }"
+  >
     <component
       :is="comName"
       :list="state.list"
@@ -86,28 +108,59 @@ onMounted(() => {
               </div>
               <div class="info">
                 <span class="labels">告警值：</span>
-                <span class="text-content warning"> {{ montionFilter(item.alertvalue) }}</span>
+                <span class="text-content warning">
+                  {{ montionFilter(item.alertvalue) }}</span
+                >
               </div>
             </div>
 
             <div class="flex">
               <div class="info">
                 <span class="labels shrink-0"> 地址：</span>
-                <span class="ciyao truncate" style="font-size: 12px; width: 220px" :title="handleAddress(item)">
+                <span
+                  class="truncate ciyao"
+                  style="font-size: 12px; width: 220px"
+                  :title="handleAddress(item)"
+                >
                   {{ handleAddress(item) }}</span
                 >
               </div>
               <div class="info time shrink-0">
                 <span class="labels">时间：</span>
-                <span class="text-content" style="font-size: 12px"> {{ item.createtime }}</span>
+                <span class="text-content" style="font-size: 12px">
+                  {{ item.createtime }}</span
+                >
               </div>
             </div>
             <div class="flex">
               <div class="info">
                 <span class="labels">报警内容：</span>
-                <span class="text-content ciyao" :class="{ warning: item.alertdetail }">
+                <span
+                  class="text-content ciyao"
+                  :class="{ warning: item.alertdetail }"
+                >
                   {{ item.alertdetail || "无" }}</span
                 >
+              </div>
+              <div class="info time shrink-0">
+                <span class="labels">报警级别：</span>
+                <span class="text-content" style="font-size: 12px">
+                  <b class="error1" v-if="item.WarningTxt == '特别紧急'">{{
+                    item.WarningTxt
+                  }}</b>
+                  <b class="error2" v-if="item.WarningTxt == '紧急'">{{
+                    item.WarningTxt
+                  }}</b>
+                  <b class="error3" v-if="item.WarningTxt == '高'">{{
+                    item.WarningTxt
+                  }}</b>
+                  <b class="error4" v-if="item.WarningTxt == '中'">{{
+                    item.WarningTxt
+                  }}</b>
+                  <b class="error5" v-if="item.WarningTxt == '低'">{{
+                    item.WarningTxt
+                  }}</b>
+                </span>
               </div>
             </div>
           </div>
@@ -121,7 +174,9 @@ onMounted(() => {
 .right_bottom {
   width: 100%;
   height: 100%;
-
+  .flex {
+    display: inline-block;
+  }
   .right_center_item {
     display: flex;
     align-items: center;
@@ -138,7 +193,7 @@ onMounted(() => {
     .inner_right {
       position: relative;
       height: 100%;
-      width: 400px;
+      width: calc(100% - 30px);
       flex-shrink: 0;
       line-height: 1.5;
 
@@ -189,5 +244,30 @@ onMounted(() => {
 
 .overflow-y-auto {
   overflow-y: auto;
+}
+.error1 {
+  color: #fd1d1d;
+  font-size: 16px !important;
+  font-weight: 700;
+}
+.error2 {
+  color: #e6503c;
+  font-size: 16px !important;
+  font-weight: 700;
+}
+.error3 {
+  color: #d83ce6;
+  font-size: 16px !important;
+  font-weight: 700;
+}
+.error4 {
+  color: #e6a23c;
+  font-size: 16px !important;
+  font-weight: 700;
+}
+.error5 {
+  color: #3ce645;
+  font-size: 16px !important;
+  font-weight: 700;
 }
 </style>

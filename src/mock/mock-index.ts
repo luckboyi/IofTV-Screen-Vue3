@@ -107,15 +107,45 @@ export default [
         url: "/bigscreen/ranking",
         type: "get",
         response: () => {
-            let num = Mock.mock({ "list|80": [{ value: "@integer(50,1000)", name: "@city()" }] }).list
+            //let num = Mock.mock({ "list|80": [{ value: "@integer(50,1000)", name: "@city()" }] }).list
             //   console.log("ranking",num);
             let newNum: any = [], numObj: any = {}
+            let num = [{
+                value: 1200,
+                name: '内存异常'
+            },
+            {
+                value: 5600,
+                name: 'CPU异常'
+            },
+            {
+                value: 4000,
+                name: '磁盘IO异常'
+            },
+            {
+                value: 3000,
+                name: '网卡异常'
+            },
+            {
+                value: 1200,
+                name: '温度异常'
+            },
+            {
+                value: 20,
+                name: '实时蓝屏'
+            },
+            {
+                value: 5,
+                name: '宽带异常'
+            }
+            ]
             num.map((item: any) => {
                 if (!numObj[item.name] && newNum.length < 8) {
                     numObj[item.name] = true
                     newNum.push(item)
                 }
             })
+            console.log(num)
             let arr = newNum.sort((a: any, b: any) => {
                 return b.value - a.value
             })

@@ -32,7 +32,7 @@ getData();
 </script>
 
 <template>
-  <ul class="user_Overview flex">
+  <ul class="flex user_Overview">
     <li class="user_Overview-item" style="color: #00fdfa">
       <div class="user_Overview_nums allnum">
         <CountUp :endVal="state.totalNum" :duration="duration" />

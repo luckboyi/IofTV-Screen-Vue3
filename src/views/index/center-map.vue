@@ -111,7 +111,7 @@ const mapClick = (params: any) => {
 
 <style scoped lang="scss">
 .centermap {
-  margin-bottom: 30px;
+  margin-bottom: 6px;
 
   .maptitle {
     height: 60px;

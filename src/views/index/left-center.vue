@@ -3,7 +3,9 @@ import { ref, reactive } from "vue";
 import { graphic } from "echarts/core";
 import { countUserNum } from "@/api";
 import {ElMessage} from "element-plus"
-
+const props = defineProps<{
+    type:any;
+  }>();
 let colors = ["#0BFC7F", "#A0A0A0", "#F48C02", "#F4023C"];
 const option = ref({});
 const state = reactive({
