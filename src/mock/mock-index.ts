@@ -168,7 +168,7 @@ export default [
                         alertdetail: "@csentence(5,10)",
                         "alertname|1": ["水浸告警", "各种报警"],
                         alertvalue: "@float(60, 200)",
-                        createtime: "2022-04-19 08:38:33",
+                        createtime: "2024-04-19 08:38:33",
                         deviceid: null,
                         "gatewayno|+1": 10000,
                         phase: "A1",

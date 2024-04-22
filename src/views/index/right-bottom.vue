@@ -43,6 +43,7 @@ const getData = () => {
             alertdetail[Math.floor(Math.random() * array.length)];
           element.alertdetail = randomDeail;
           element.WarningTxt = randomElement;
+          
         });
         state.list = res.data.list;
       } else {
