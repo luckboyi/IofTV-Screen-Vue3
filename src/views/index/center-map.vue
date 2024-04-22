@@ -27,7 +27,8 @@ const dataSetHandle = async (regionCode: string, list: object[]) => {
   let mapData: MapdataType[] = [];
   //获取当前地图每块行政区中心点
   geojson.features.forEach((element: any) => {
-    cityCenter[element.properties.name] = element.properties.centroid || element.properties.center;
+    cityCenter[element.properties.name] =
+      element.properties.centroid || element.properties.center;
   });
   //当前中心点如果有此条数据中心点则赋值x，y当然这个x,y也可以后端返回进行大点，前端省去多行代码
   list.forEach((item: any) => {
@@ -38,16 +39,68 @@ const dataSetHandle = async (regionCode: string, list: object[]) => {
       });
     }
   });
+
   await nextTick();
 
   option.value = optionHandle(regionCode, list, mapData);
 };
 
 const getData = async (regionCode: string) => {
+  console.log(regionCode);
   centerMap({ regionCode: regionCode })
     .then((res) => {
+      console.log(1223);
       console.log("中上--设备分布", res);
+      console.log(1222);
       if (res.success) {
+        if (res.data.regionCode == "china") {
+          let index = res.data.dataList.findIndex(
+            (item: any) => item.name == "浙江省"
+          );
+          if (index == -1) {
+            let json = {
+              name: "浙江省",
+              value: "500",
+            };
+            res.data.dataList.push(json);
+          }
+        }
+        if (res.data.regionCode == 330000) {
+          let index = res.data.dataList.findIndex(
+            (item: any) => item.name == "绍兴市"
+          );
+          if (index == -1) {
+            let json = {
+              name: "绍兴市",
+              value: "500",
+            };
+            res.data.dataList.push(json);
+          }
+        }
+        if(res.data.regionCode == 330600){
+          let json={
+            name:'新昌县',
+            value:300,
+          }
+          res.data.dataList.push(json);
+          let json2={
+            name:'柯桥区',
+            value:12,
+          }
+          res.data.dataList.push(json2);
+        }
+        if(res.data.regionCode == 330624){
+          let json={
+            name:'南明街道',
+            value:10,
+          }
+          res.data.dataList.push(json);
+          let json2={
+            name:'儒岙镇',
+            value:5,
+          }
+          res.data.dataList.push(json2);
+        }
         dataSetHandle(res.data.regionCode, res.data.dataList);
       } else {
         ElMessage.error(res.msg);
@@ -64,7 +117,9 @@ const getGeojson = (regionCode: string) => {
       mapjson = mapjson.geoJSON;
       resolve(mapjson);
     } else {
-      mapjson = await GETNOBASE(`./map-geojson/${regionCode}.json`).then((data) => data);
+      mapjson = await GETNOBASE(`./map-geojson/${regionCode}.json`).then(
+        (data) => data
+      );
       code.value = regionCode;
       registerMap(regionCode, {
         geoJSON: mapjson as any,
@@ -77,12 +132,11 @@ const getGeojson = (regionCode: string) => {
 getData(code.value);
 
 const mapClick = (params: any) => {
-  // console.log(params);
   let xzqData = regionCodes[params.name];
   if (xzqData) {
     getData(xzqData.adcode);
   } else {
-    window["$message"].warning("暂无下级地市");
+    window["$message"].warning("暂无下级地区");
   }
 };
 </script>
@@ -96,7 +150,9 @@ const mapClick = (params: any) => {
     </div>
     <div class="mapwrap">
       <BorderBox13>
-        <div class="quanguo" @click="getData('china')" v-if="code !== 'china'">中国</div>
+        <div class="quanguo" @click="getData('china')" v-if="code !== 'china'">
+          中国
+        </div>
         <v-chart
           class="chart"
           :option="option"
@@ -124,7 +180,12 @@ const mapClick = (params: any) => {
       font-size: 28px;
       font-weight: 900;
       letter-spacing: 6px;
-      background: linear-gradient(92deg, #0072ff 0%, #00eaff 48.8525390625%, #01aaff 100%);
+      background: linear-gradient(
+        92deg,
+        #0072ff 0%,
+        #00eaff 48.8525390625%,
+        #01aaff 100%
+      );
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       margin: 0 10px;
@@ -167,7 +228,8 @@ const mapClick = (params: any) => {
       line-height: 26px;
       letter-spacing: 6px;
       cursor: pointer;
-      box-shadow: 0 2px 4px rgba(0, 237, 237, 0.5), 0 0 6px rgba(0, 237, 237, 0.4);
+      box-shadow: 0 2px 4px rgba(0, 237, 237, 0.5),
+        0 0 6px rgba(0, 237, 237, 0.4);
       z-index: 10;
     }
   }

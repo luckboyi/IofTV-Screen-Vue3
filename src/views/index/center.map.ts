@@ -336,6 +336,21 @@ export const regionCodes: any = {
         "level": "province",
         "name": "浙江省"
     },
+    "绍兴市":{
+        "adcode": "330600",
+        "level": "city",
+        "name": "绍兴市"
+    },
+    "诸暨市":{
+        "adcode": "330681",
+        "level": "district",
+        "name": "诸暨市"
+    },
+    "新昌县":{
+        "adcode": "330624",
+        "level": "district",
+        "name": "新昌县"
+    },
     "河北省": {
         "adcode": "130000",
         "level": "province",
